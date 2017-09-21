@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  stock_capital: 9.99
+  cash: 9.99
+  daily_stock_capital_percentage: 1
+  monthly_stock_capital_percentage: 1
+  yearly_stock_capital_percentage: 1
+  annual_stock_capital_gain: 9.99
+  monthly_stock_capital_gain: 9.99
+  daily_stock_capital_gain: 9.99
+
+two:
+  user_id: 1
+  stock_capital: 9.99
+  cash: 9.99
+  daily_stock_capital_percentage: 1
+  monthly_stock_capital_percentage: 1
+  yearly_stock_capital_percentage: 1
+  annual_stock_capital_gain: 9.99
+  monthly_stock_capital_gain: 9.99
+  daily_stock_capital_gain: 9.99

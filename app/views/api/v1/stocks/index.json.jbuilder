@@ -1,0 +1,11 @@
+json.symbol @default_stock.symbol
+json.name @default_stock.name
+json.year_high @default_stock.year_high
+json.year_low @default_stock.year_low
+json.asking_price @default_stock.asking_price
+json.bidding_price @default_stock.bidding_price
+json.days_percent @default_stock.days_percent
+json.average_daily_volume @default_stock.average_daily_volume
+json.days_low @default_stock.days_low
+json.days_high @default_stock.days_high
+json.changein_percent @default_stock.changein_percent

@@ -1,11 +1,14 @@
-json.symbol @default_stock.symbol
-json.name @default_stock.name
-json.year_high @default_stock.year_high
-json.year_low @default_stock.year_low
-json.asking_price @default_stock.asking_price
-json.bidding_price @default_stock.bidding_price
-json.days_percent @default_stock.days_percent
-json.average_daily_volume @default_stock.average_daily_volume
-json.days_low @default_stock.days_low
-json.days_high @default_stock.days_high
-json.changein_percent @default_stock.changein_percent
+json.set! :stocks do
+	json.array! @all_stocks.each do |stock|
+		json.symbol stock.symbol
+		json.company_name stock.company_name
+		json.year_high stock.year_high
+		json.year_low stock.year_low
+		json.asking_price stock.asking_price
+		json.bidding_price stock.bidding_price
+		json.average_daily_volume stock.average_daily_volume
+		json.days_low stock.days_low
+		json.days_high stock.days_high
+		json.changein_percent stock.changein_percent
+	end
+end

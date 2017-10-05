@@ -7,4 +7,4 @@ json.bidding_price @new_stock.bidding_price
 json.average_daily_volume @new_stock.average_daily_volume
 json.days_low @new_stock.days_low
 json.days_high @new_stock.days_high
-json.days_percent @new_stock.changein_percent
+json.days_percent @new_stock.days_percent

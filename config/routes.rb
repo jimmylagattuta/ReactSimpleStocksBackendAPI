@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   		resources :users
   	end
   end
+
+  post '/api/v1/sessions/signin' => 'api/v1/sessions#signin'
   
 end
 	

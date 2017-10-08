@@ -35,7 +35,8 @@ gem 'bootstrap-sass'
 gem 'bcrypt', '~> 3.1.7'
 gem 'stock_quote'
 gem 'rack-cors'
-
+gem 'devise'
+gem 'omniauth'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

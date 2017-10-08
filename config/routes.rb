@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # admin email: jimmy.lagattuta@gmail.com
+  # admin password: 1234 
  
-
   namespace :api do
   	namespace :v1 do
   		resources :stocks
@@ -19,8 +20,11 @@ Rails.application.routes.draw do
   		resources :users
   	end
   end
-
-  post '/api/v1/sessions/signin' => 'api/v1/sessions#signin'
-  
+  namespace :api do
+  	namespace :v1 do
+  		resources :sessions
+  	end  	
+  end
+  post "api/v1/user_logout" => "api/v1/sessions#destroy"
 end
 	

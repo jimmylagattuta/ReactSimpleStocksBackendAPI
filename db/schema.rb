@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171007101419) do
+ActiveRecord::Schema.define(version: 20171009124135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "portfolio_stocks", force: :cascade do |t|
+    t.decimal  "port_id",         precision: 9, scale: 2
+    t.decimal  "stock_id",        precision: 9, scale: 2
+    t.decimal  "pps_at_purchase", precision: 9, scale: 2
+    t.decimal  "current_pps",     precision: 9, scale: 2
+    t.decimal  "pps_at_sale",     precision: 9, scale: 2
+    t.decimal  "quantity",        precision: 9, scale: 2
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
 
   create_table "portfolios", force: :cascade do |t|
     t.integer  "user_id"
@@ -43,6 +54,7 @@ ActiveRecord::Schema.define(version: 20171007101419) do
     t.decimal  "changein_percent"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.text     "notes"
   end
 
   create_table "users", force: :cascade do |t|
@@ -51,6 +63,8 @@ ActiveRecord::Schema.define(version: 20171007101419) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.boolean  "admin"
+    t.boolean  "active_port"
+    t.integer  "portfolios"
   end
 
 end

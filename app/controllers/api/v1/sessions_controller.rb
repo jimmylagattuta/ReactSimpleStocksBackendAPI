@@ -15,6 +15,9 @@ class Api::V1::SessionsController < ApplicationController
 			session[:id] = user.id
 			puts "*" * 100
 			puts session[:id]
+			# email = user.email
+			email = user.email.split('@')
+			user.email = email.first
 			puts "*" * 100
 		    render json: user.as_json(only: [:id, :email, :confirmed_at])
 			flash[:success] = "You Have Successfully Logged In"

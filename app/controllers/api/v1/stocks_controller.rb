@@ -34,6 +34,7 @@ class Api::V1::StocksController < ApplicationController
 		average_daily_volume = @new_stock.average_daily_volume
 		days_low = @new_stock.days_low
 		days_high = @new_stock.days_high
+		notes = @new_stock.notes
 		puts "$" * 100
 		puts "$" * 100
 		puts "@new_stock below"
@@ -71,7 +72,8 @@ class Api::V1::StocksController < ApplicationController
 									  days_percent: days_percent,
 									  average_daily_volume: average_daily_volume,
 									  days_low: days_low,
-									  days_high: days_high
+									  days_high: days_high,
+									  notes: notes
 
 									  )
 			render 'create.json.jbuilder'
@@ -89,7 +91,8 @@ class Api::V1::StocksController < ApplicationController
 									  changein_percent: days_percent,
 									  average_daily_volume: average_daily_volume,
 									  days_low: days_low,
-									  days_high: days_high
+									  days_high: days_high,
+									  notes: notes
 
 									  )
 			render 'create.json.jbuilder'
@@ -115,6 +118,48 @@ class Api::V1::StocksController < ApplicationController
 			# puts "*" * 100
 
 			# render json: stock_to_frontend
+
+	end
+
+	def news
+		require "net/http"
+		require "json"
+		puts "51" * 100
+		@all_stocks = Stock.all
+		puts "52" * 100
+		news_array = []
+		puts "53" * 100
+		variable = 'goog'
+		puts "54" * 100
+		capital_variable = variable.upcase
+		puts "55" * 100
+		# username = "21856d45863b11db5677abfaa5e51d8d"
+		puts "56" * 100
+		# password = "38e3ff3446b9e4e6138148c03d639de4"
+		puts "57" * 100
+		
+		init_response = Unirest.get "https://api.intrinio.com/companies?ticker=#{capital_variable}", auth:{:user=>"21856d45863b11db5677abfaa5e51d8d", :password=>"38e3ff3446b9e4e6138148c03d639de4"}
+		puts "58" * 100
+		response = init_response.body
+		puts "59" * 100
+		# company = JSON.parse(response)
+		puts "60" * 100
+		puts "$" * 100
+		puts response
+		puts "$" * 100
+
+		# @response = Unirest.get('https://api.intrinio.com/companies?identifier={variable}')
+		# puts "*" * 100
+		# puts "response below"
+		# puts @response.inspect
+		# puts "*" * 100
+		# puts "response below"
+		# puts @response.raw_body
+		# puts "*" * 100
+
+		news_array.push(response)
+
+		render json: news_array
 
 	end
 

@@ -37,6 +37,7 @@ gem 'stock_quote'
 gem 'rack-cors'
 gem 'devise'
 gem 'omniauth'
+gem 'unirest'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  port_id: 1
+  stock_id: 1
+  pps_at_purchase: 1
+  current_pps: 1
+  pps_at_sale: 1
+  quantity: 1
+
+two:
+  port_id: 1
+  stock_id: 1
+  pps_at_purchase: 1
+  current_pps: 1
+  pps_at_sale: 1
+  quantity: 1

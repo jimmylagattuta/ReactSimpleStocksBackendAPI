@@ -88,7 +88,7 @@ class Api::V1::StocksController < ApplicationController
 									  year_low: year_low,
 									  asking_price: asking_price,
 									  bidding_price: bidding_price,
-									  changein_percent: days_percent,
+									  days_percent: days_percent,
 									  average_daily_volume: average_daily_volume,
 									  days_low: days_low,
 									  days_high: days_high,

@@ -29,5 +29,6 @@ Rails.application.routes.draw do
   get "api/v1/news" => "api/v1/stocks#news"
   post "api/v1/port/port_check" => "api/v1/portfolios#port_check"
   post "api/v1/portfolios/init" => "api/v1/portfolios#init"
+  post "api/v1/port/destroy" => "api/v1/portfolios#destroy"
 end
 	

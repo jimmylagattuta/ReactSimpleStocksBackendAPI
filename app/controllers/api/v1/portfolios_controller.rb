@@ -13,6 +13,16 @@ class Api::V1::PortfoliosController < ApplicationController
 								    cash: params['values']['cash_capital'])
 		user.active_port = true
 		user.save
+		puts "?" * 100
+		puts "?" * 100
+		puts "?" * 100
+		puts "user errors below"
+		puts user.errors.full_messages
+		puts "?" * 100
+		puts "?" * 100
+		puts "?" * 100
+
+
 		port = { userId: new_port.user_id,
 				 cashCapital: new_port.cash
 			}
@@ -21,29 +31,53 @@ class Api::V1::PortfoliosController < ApplicationController
 
 	def port_check
 		user = User.find_by(id: params[:id].to_i)
-		port_array = []
-		if user
-			email = user.email
-			email = email.split("@")
-			email = email.first
+		to_check = Portfolio.find_by(user_id: user.id)
+		puts "@#@" * 100
+		puts "@#@" * 100
+		puts to_check.inspect
+		puts "@#@" * 100
+		puts "@#@" * 100
 
-
-			if user.active_port != false
-				puts "%" * 100
-				puts "user.active_port"
-				puts "%" * 100
-
-				answer = { active: true, user: email }
-				port_array.push(answer)
-			else 
-				puts "%" * 100
-				puts "user.not active"
-				puts "%" * 100
-				answer = { active: false, user: email }
-				port_array.push(answer)
-			end
+		if to_check == nil
+			puts "^_^" * 100
+			puts "^_^" * 100
+			puts "to_check = nil"
+			puts "^_^" * 100
+			puts "^_^" * 100
 		end
-		render json: port_array
+		puts "&" * 100
+		puts "&" * 100
+		puts "&" * 100
+		puts "to check below"
+		puts to_check.inspect
+		puts "&" * 100
+		puts "&" * 100
+		puts "&" * 100
+		if to_check == nil
+			answer = { active: false, user: user.email.split('@').first }
+		else
+			answer = { active: true, user: user.email.split('@').first }
+		end
+		render json: answer
+	end
+
+	def destroy
+		puts "%" * 100
+		puts "%" * 100
+		puts "%" * 100
+		puts "destory actvated"
+		puts 'params below'
+		puts params.inspect
+		puts "%" * 100
+		puts "%" * 100
+		puts "%" * 100
+		port = Portfolio.find_by(user_id: params['id'])
+		port.delete 
+		user = User.find_by(id: params['id'])
+		user.active_port = false
+		user.save
+		success_messege = { message: "Portfolio Deleted" } 
+		render json: success_messege
 	end
 
 end

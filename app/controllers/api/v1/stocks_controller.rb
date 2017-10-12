@@ -163,5 +163,12 @@ class Api::V1::StocksController < ApplicationController
 
 	end
 
+	def destroy
+		@stock = Stock.find_by(params[id: stock_id])
+		@stock.delete
+		message = { message: "Delete Successful" }
+		render json: message
+	end
+
 
 end

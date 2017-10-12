@@ -9,6 +9,6 @@ json.set! :stocks do
 		json.average_daily_volume stock.average_daily_volume
 		json.days_low stock.days_low
 		json.days_high stock.days_high
-		json.changein_percent stock.changein_percent
+		json.days_percent stock.days_percent
 	end
 end

@@ -1,5 +1,6 @@
 json.set! :stocks do
 	json.array! @all_stocks.each do |stock|
+		json.id stock.id
 		json.symbol stock.symbol
 		json.company_name stock.company_name
 		json.year_high stock.year_high

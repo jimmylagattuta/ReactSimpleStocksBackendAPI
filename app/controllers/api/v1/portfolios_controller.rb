@@ -72,6 +72,7 @@ class Api::V1::PortfoliosController < ApplicationController
 					 days_dollar_change: to_check.days_dollar_change,
 					 months_dollar_change: to_check.months_dollar_change,
 					 years_dollar_change: to_check.years_dollar_change,
+					 total_capital: to_check.total_capital,
 					 investment: to_check.investment }
 			puts "()" * 100
 			puts "port below"

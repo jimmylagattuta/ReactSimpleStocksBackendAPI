@@ -54,11 +54,31 @@ class Api::V1::PortfoliosController < ApplicationController
 		puts "&" * 100
 		puts "&" * 100
 		if to_check == nil
+			puts "*" * 100
+			puts "to_check == nil"
+			puts "*" * 100
 			answer = { active: false, user: user.email.split('@').first }
+			render json: answer
 		else
-			answer = { active: true, user: user.email.split('@').first }
+			puts "*" * 100
+			puts "to_check == true"
+			puts "*" * 100
+			port = { id: to_check.id,
+					 stock_capital: to_check.stock_capital,
+					 cash: to_check.cash,
+					 daily_stock_capital_percentage: to_check.daily_stock_capital_percentage,
+					 monthly_stock_capital_percentage: to_check.monthly_stock_capital_percentage,
+					 yearly_stock_capital_percentage: to_check.yearly_stock_capital_percentage,
+					 days_dollar_change: to_check.days_dollar_change,
+					 months_dollar_change: to_check.months_dollar_change,
+					 years_dollar_change: to_check.years_dollar_change,
+					 investment: to_check.investment }
+			puts "()" * 100
+			puts "port below"
+			puts port.inspect
+			puts "()" * 100
+			render json: port
 		end
-		render json: answer
 	end
 
 	def destroy
@@ -71,9 +91,26 @@ class Api::V1::PortfoliosController < ApplicationController
 		puts "%" * 100
 		puts "%" * 100
 		puts "%" * 100
-		port = Portfolio.find_by(user_id: params['id'])
+		id = params['id'].to_i
+		puts "%" * 100
+		puts "%" * 100
+		puts "%" * 100
+		puts "id below me"
+		puts id.inspect
+		puts "%" * 100
+		puts "%" * 100
+		puts "%" * 100
+
+		port = Portfolio.find_by(user_id: id)
+		puts "%" * 100
+		puts "%" * 100
+		puts "port right here!!!!!!!!!!!!!"
+		puts port.inspect
+		puts "%" * 100
+		puts "%" * 100
+
 		port.delete 
-		user = User.find_by(id: params['id'])
+		user = User.find_by(id: params['id'].to_i)
 		user.active_port = false
 		user.save
 		success_messege = { message: "Portfolio Deleted" } 

@@ -6,6 +6,34 @@ class Api::V1::StocksController < ApplicationController
 
 	def index
 		@all_stocks = Stock.all
+		@all_stocks.each do |stock|
+			update_stock = StockQuote::Stock.quote(stock.symbol)
+			if update_stock.ask
+				stock.asking_price = update_stock.ask
+			end
+			if update_stock.bid
+				stock.bidding_price = update_stock.bid
+			end
+			if update_stock.year_high
+				stock.year_high = update_stock.year_high
+			end
+			if update_stock.year_low
+				stock.year_low = update_stock.year_low
+			end
+			if update_stock.changein_percent
+				stock.days_percent = update_stock.changein_percent
+			end
+			if update_stock.average_daily_volume
+				stock.average_daily_volume = update_stock.average_daily_volume
+			end
+			if update_stock.days_high
+				stock.days_high = update_stock.days_high
+			end
+			if update_stock.days_low
+				stock.days_low = update_stock.days_low
+			end
+			stock.save
+		end
 		@stock = params
 		puts "*" * 100
 		puts "*" * 100
@@ -163,10 +191,20 @@ class Api::V1::StocksController < ApplicationController
 
 	end
 
-	def destroy
-		@stock = Stock.find_by(params[id: stock_id])
+	def delete_the_stock
+		puts "&" * 100
+		puts "&" * 100
+		puts params
+		puts "&" * 100
+		puts "&" * 100
+
+		@stock = Stock.find_by(id: params['stock_id'])
+			if @stock
+				message = { message: "Delete Successful" }
+			else
+				message = { message: "Stock was not found" }
+			end
 		@stock.delete
-		message = { message: "Delete Successful" }
 		render json: message
 	end
 

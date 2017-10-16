@@ -1,3 +1,4 @@
+json.id @new_stock.id
 json.symbol @new_stock.symbol
 json.company_name @new_stock.company_name
 json.year_high @new_stock.year_high

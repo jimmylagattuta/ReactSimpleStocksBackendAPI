@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  portfolio_id: 1
+  user_id: 1
+  status: MyString
+  p_or_s: MyString
+
+two:
+  portfolio_id: 1
+  user_id: 1
+  status: MyString
+  p_or_s: MyString

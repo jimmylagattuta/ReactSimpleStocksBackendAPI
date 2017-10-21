@@ -31,4 +31,5 @@ Rails.application.routes.draw do
   post "api/v1/portfolios/init" => "api/v1/portfolios#init"
   post "api/v1/port/destroy" => "api/v1/portfolios#destroy"
   post "api/v1/stocks/delete_the_stock" => "api/v1/stocks#delete_the_stock"
+  post "api/v1/port/add_to" => "api/v1/portfolios#add_to"
 end

@@ -10,13 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016094546) do
+ActiveRecord::Schema.define(version: 20171021064726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "history_of_portfolios", force: :cascade do |t|
+    t.decimal  "user_id",                    precision: 9, scale: 2
+    t.decimal  "portfolio_id",               precision: 9, scale: 2
+    t.text     "notes"
+    t.decimal  "purchases",                  precision: 9, scale: 2
+    t.decimal  "sales",                      precision: 9, scale: 2
+    t.string   "gain_or_loss"
+    t.decimal  "capital",                    precision: 9, scale: 2
+    t.boolean  "completed_without_error"
+    t.text     "sales_notes"
+    t.text     "purchases_notes"
+    t.decimal  "total_investment",           precision: 9, scale: 2
+    t.string   "total_investment_breakeven"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+  end
+
   create_table "portfolio_stocks", force: :cascade do |t|
-    t.decimal  "port_id",         precision: 9, scale: 2
+    t.decimal  "portfolio_id",    precision: 9, scale: 2
     t.decimal  "stock_id",        precision: 9, scale: 2
     t.decimal  "pps_at_purchase", precision: 9, scale: 2
     t.decimal  "current_pps",     precision: 9, scale: 2
@@ -24,6 +41,7 @@ ActiveRecord::Schema.define(version: 20171016094546) do
     t.decimal  "quantity",        precision: 9, scale: 2
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+    t.string   "symbol"
   end
 
   create_table "portfolios", force: :cascade do |t|
@@ -40,6 +58,17 @@ ActiveRecord::Schema.define(version: 20171016094546) do
     t.decimal  "years_dollar_change",              precision: 9, scale: 2
     t.decimal  "investment",                       precision: 9, scale: 2
     t.decimal  "total_capital",                    precision: 9, scale: 2
+    t.decimal  "all_time_percent",                 precision: 9, scale: 2
+    t.decimal  "all_time_dollar",                  precision: 9, scale: 2
+  end
+
+  create_table "purchase_and_sales", force: :cascade do |t|
+    t.decimal  "portfolio_id", precision: 9, scale: 2
+    t.decimal  "user_id",      precision: 9, scale: 2
+    t.string   "status"
+    t.string   "p_or_s"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "stocks", force: :cascade do |t|

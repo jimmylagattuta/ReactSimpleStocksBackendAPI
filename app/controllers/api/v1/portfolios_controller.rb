@@ -3,26 +3,12 @@ class Api::V1::PortfoliosController < ApplicationController
   	skip_before_action :verify_authenticity_token
 
 	def init
-		puts "*" * 100
-		puts "params"
-		puts params.inspect
-		puts session[:id]
-		puts "*" * 100
 		user = User.find_by(id: params['userId'])
 		new_port = Portfolio.create(user_id: params['userId'],
-								    cash: params['values']['cash_capital'])
+								    cash: params['values']['cash_capital']
+									)
 		user.active_port = true
 		user.save
-		puts "?" * 100
-		puts "?" * 100
-		puts "?" * 100
-		puts "user errors below"
-		puts user.errors.full_messages
-		puts "?" * 100
-		puts "?" * 100
-		puts "?" * 100
-
-
 		port = { userId: new_port.user_id,
 				 cashCapital: new_port.cash
 			}
@@ -32,26 +18,14 @@ class Api::V1::PortfoliosController < ApplicationController
 	def port_check
 		user = User.find_by(id: params[:id].to_i)
 		to_check = Portfolio.find_by(user_id: user.id)
-		puts "@#@" * 100
-		puts "@#@" * 100
-		puts to_check.inspect
-		puts "@#@" * 100
-		puts "@#@" * 100
-
 		if to_check == nil
-			puts "^_^" * 100
 			puts "^_^" * 100
 			puts "to_check = nil"
 			puts "^_^" * 100
-			puts "^_^" * 100
 		end
-		puts "&" * 100
-		puts "&" * 100
 		puts "&" * 100
 		puts "to check below"
 		puts to_check.inspect
-		puts "&" * 100
-		puts "&" * 100
 		puts "&" * 100
 		if to_check == nil
 			puts "*" * 100
@@ -60,10 +34,8 @@ class Api::V1::PortfoliosController < ApplicationController
 			answer = { active: false, user: user.email.split('@').first }
 			render json: answer
 		else
-			puts "*" * 100
-			puts "to_check == true"
-			puts "*" * 100
 			port = { id: to_check.id,
+					 user: user.email.split('@').first,
 					 stock_capital: to_check.stock_capital,
 					 cash: to_check.cash,
 					 daily_stock_capital_percentage: to_check.daily_stock_capital_percentage,
@@ -73,49 +45,51 @@ class Api::V1::PortfoliosController < ApplicationController
 					 months_dollar_change: to_check.months_dollar_change,
 					 years_dollar_change: to_check.years_dollar_change,
 					 total_capital: to_check.total_capital,
-					 investment: to_check.investment }
-			puts "()" * 100
-			puts "port below"
-			puts port.inspect
-			puts "()" * 100
+					 investment: to_check.investment,
+					 all_time_percent: to_check.all_time_percent,
+					 all_time_dollar: to_check.all_time_dollar
+					}
 			render json: port
 		end
 	end
 
 	def destroy
-		puts "%" * 100
-		puts "%" * 100
-		puts "%" * 100
-		puts "destory actvated"
-		puts 'params below'
-		puts params.inspect
-		puts "%" * 100
-		puts "%" * 100
-		puts "%" * 100
 		id = params['id'].to_i
-		puts "%" * 100
-		puts "%" * 100
-		puts "%" * 100
-		puts "id below me"
-		puts id.inspect
-		puts "%" * 100
-		puts "%" * 100
-		puts "%" * 100
-
 		port = Portfolio.find_by(user_id: id)
-		puts "%" * 100
-		puts "%" * 100
-		puts "port right here!!!!!!!!!!!!!"
-		puts port.inspect
-		puts "%" * 100
-		puts "%" * 100
-
 		port.delete 
 		user = User.find_by(id: params['id'].to_i)
 		user.active_port = false
 		user.save
 		success_messege = { message: "Portfolio Deleted" } 
 		render json: success_messege
+	end
+
+	def add_to
+		stocks_to_purchase = params['stocks']['stocks_by_symbol']
+		portId = params['stocks']['portId']
+		portId = portId.to_i
+		stocks_to_purchase.each do |stock|
+			stock = stock[0, 4]
+			stk = Stock.find_by(symbol: stock)
+			stk = stk.id
+			puts ">>>>>>>>>>>"
+			puts "portId below"
+			puts portId.inspect
+			portfolio_stock = PortfolioStock.new(stock_id: stk, portfolio_id: portId)
+			puts "portfolio_stock here"
+			puts portfolio_stock.inspect
+			portfolio_stock.save
+			puts "errors"
+			puts portfolio_stock.errors.full_messages
+			if portfolio_stock.save
+				puts "saved!"
+				message = { message: "portfolio_stock saved*" }
+			else
+				puts "not saved"
+				message = { message: "portfolio_stock not saved" }
+			end
+			render json: message
+		end 
 	end
 
 end

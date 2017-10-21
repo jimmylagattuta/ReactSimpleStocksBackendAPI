@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  portfolio_id: 1
+  notes: MyText
+  purchases: 1
+  sales: 1
+  gain_or_loss: MyString
+  capital: 1
+  completed_without_error: false
+  sales_notes: MyText
+  purchases_notes: MyText
+  total_investment: 1
+  total_investment_breakeven: MyString
+
+two:
+  user_id: 1
+  portfolio_id: 1
+  notes: MyText
+  purchases: 1
+  sales: 1
+  gain_or_loss: MyString
+  capital: 1
+  completed_without_error: false
+  sales_notes: MyText
+  purchases_notes: MyText
+  total_investment: 1
+  total_investment_breakeven: MyString

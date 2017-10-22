@@ -4,7 +4,8 @@ class Api::V1::StocksController < ApplicationController
 	def index
 		@all_stocks = Stock.all
 		@all_stocks.each do |stock|
-			update_stock = StockQuote::Stock.quote(stock.symbol)
+			symbol_for_loop = stock.symbol
+			update_stock = StockQuote::Stock.quote(symbol_for_loop)
 			if update_stock.ask
 				stock.asking_price = update_stock.ask
 			end
@@ -31,7 +32,6 @@ class Api::V1::StocksController < ApplicationController
 			end
 			stock.save
 		end
-		@stock = params
 		render 'index.json.jbuilder'
 	end
 
@@ -134,12 +134,6 @@ class Api::V1::StocksController < ApplicationController
 	end
 
 	def delete_the_stock
-		puts "&" * 100
-		puts "&" * 100
-		puts params
-		puts "&" * 100
-		puts "&" * 100
-
 		@stock = Stock.find_by(id: params['stock_id'])
 			if @stock
 				message = { message: "Delete Successful" }
@@ -149,6 +143,4 @@ class Api::V1::StocksController < ApplicationController
 		@stock.delete
 		render json: message
 	end
-
-
 end

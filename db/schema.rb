@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171021064726) do
+ActiveRecord::Schema.define(version: 20171022202348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,15 +33,17 @@ ActiveRecord::Schema.define(version: 20171021064726) do
   end
 
   create_table "portfolio_stocks", force: :cascade do |t|
-    t.decimal  "portfolio_id",    precision: 9, scale: 2
-    t.decimal  "stock_id",        precision: 9, scale: 2
-    t.decimal  "pps_at_purchase", precision: 9, scale: 2
-    t.decimal  "current_pps",     precision: 9, scale: 2
-    t.decimal  "pps_at_sale",     precision: 9, scale: 2
-    t.decimal  "quantity",        precision: 9, scale: 2
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.decimal  "portfolio_id",              precision: 9, scale: 2
+    t.decimal  "stock_id",                  precision: 9, scale: 2
+    t.decimal  "pps_at_purchase",           precision: 9, scale: 2
+    t.decimal  "current_pps",               precision: 9, scale: 2
+    t.decimal  "pps_at_sale",               precision: 9, scale: 2
+    t.decimal  "quantity",                  precision: 9, scale: 2
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.string   "symbol"
+    t.decimal  "capital_at_purchase",       precision: 9, scale: 2
+    t.decimal  "capital_at_purchse_status", precision: 9, scale: 2
   end
 
   create_table "portfolios", force: :cascade do |t|
@@ -90,11 +92,12 @@ ActiveRecord::Schema.define(version: 20171021064726) do
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.boolean  "admin"
     t.boolean  "active_port"
     t.integer  "portfolios"
+    t.decimal  "budget",          precision: 9, scale: 2
   end
 
 end

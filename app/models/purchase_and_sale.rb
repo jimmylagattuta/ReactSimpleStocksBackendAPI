@@ -1,0 +1,2 @@
+class PurchaseAndSale < ApplicationRecord
+end

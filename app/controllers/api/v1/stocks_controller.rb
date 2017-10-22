@@ -1,13 +1,11 @@
 class Api::V1::StocksController < ApplicationController
   	protect_from_forgery with: :null_session
   	skip_before_action :verify_authenticity_token
-
-
-
 	def index
 		@all_stocks = Stock.all
 		@all_stocks.each do |stock|
-			update_stock = StockQuote::Stock.quote(stock.symbol)
+			symbol_for_loop = stock.symbol
+			update_stock = StockQuote::Stock.quote(symbol_for_loop)
 			if update_stock.ask
 				stock.asking_price = update_stock.ask
 			end
@@ -34,14 +32,6 @@ class Api::V1::StocksController < ApplicationController
 			end
 			stock.save
 		end
-		@stock = params
-		puts "*" * 100
-		puts "*" * 100
-		puts "@stock below"
-		puts @stock.inspect
-		puts "*" * 100
-		puts "*" * 100
-
 		render 'index.json.jbuilder'
 	end
 
@@ -63,34 +53,14 @@ class Api::V1::StocksController < ApplicationController
 		days_low = @new_stock.days_low
 		days_high = @new_stock.days_high
 		notes = @new_stock.notes
-		puts "$" * 100
-		puts "$" * 100
-		puts "@new_stock below"
-		puts @new_stock.inspect
-		puts "$" * 100
-		puts "$" * 100
 		count = 0
 		@stocks = Stock.all
 		@stocks.each do |stock|
-				puts "*" * 100
-				puts "count below"
-				puts count
-				puts "*" * 100
 			if stock['symbol'] == symbol.upcase
 				count += 1
-				puts "*" * 100
-				puts "count below"
-				puts count
-				puts "*" * 100
-
 			end
-
 		end
 		if count == 0
-			puts "*" * 100
-			puts "count == 0"
-			puts "*" * 100
-
 			@new_stock = Stock.create(symbol: @new_stock.symbol,
 									  company_name: @new_stock.name,
 									  year_high: year_high,
@@ -102,14 +72,9 @@ class Api::V1::StocksController < ApplicationController
 									  days_low: days_low,
 									  days_high: days_high,
 									  notes: notes
-
 									  )
 			render 'create.json.jbuilder'
-
 		elsif count > 0
-			puts "*" * 100
-			puts "count > 0"
-			puts "*" * 100
 			@new_stock = Stock.new(symbol: @new_stock.symbol,
 									  company_name: name,
 									  year_high: year_high,
@@ -121,32 +86,9 @@ class Api::V1::StocksController < ApplicationController
 									  days_low: days_low,
 									  days_high: days_high,
 									  notes: notes
-
 									  )
 			render 'create.json.jbuilder'
 		end
-
-			# stock_to_frontend = []
-			# add_to_front = {
-			# 	symbol: @new_stock.symbol,
-			# 	companyName: @new_stock.company_name,
-			# 	yearHigh: year_high,
-			# 	yearLow: year_low,
-			# 	askingPrice: asking_price,
-			# 	biddingPrice: bidding_price,
-			# 	changeInPercent: days_percent,
-			# 	averageDailyVolume: average_daily_volume,
-			# 	daysLow: days_low,
-			# 	daysHigh: days_high
-			# }
-			# stock_to_frontend.push(add_to_front)
-			# puts "*" * 100
-			# puts "stock_to_frontend below"
-			# puts stock_to_frontend
-			# puts "*" * 100
-
-			# render json: stock_to_frontend
-
 	end
 
 	def news
@@ -192,12 +134,6 @@ class Api::V1::StocksController < ApplicationController
 	end
 
 	def delete_the_stock
-		puts "&" * 100
-		puts "&" * 100
-		puts params
-		puts "&" * 100
-		puts "&" * 100
-
 		@stock = Stock.find_by(id: params['stock_id'])
 			if @stock
 				message = { message: "Delete Successful" }
@@ -207,6 +143,4 @@ class Api::V1::StocksController < ApplicationController
 		@stock.delete
 		render json: message
 	end
-
-
 end

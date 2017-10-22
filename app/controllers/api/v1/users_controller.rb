@@ -15,9 +15,6 @@ class Api::V1::UsersController < ApplicationController
 
 	def create
 		@bag = params
-		puts "*" * 100
-		puts @bag.inspect
-		puts "*" * 100
 		email = @bag['email']
 		user = User.new(
 			email: email,
@@ -26,11 +23,6 @@ class Api::V1::UsersController < ApplicationController
 			)
 		session[:id] = user.id
 		user.save
-		if user.save
-			puts 'SAVED'
-		else
-			puts 'something went wrong'
-		end	
 		user_json = { email: email, session: session }
 		render json: user_json
 	end

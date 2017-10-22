@@ -1,0 +1,2 @@
+class HistoryOfPortfolio < ApplicationRecord
+end

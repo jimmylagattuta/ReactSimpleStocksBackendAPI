@@ -73,58 +73,70 @@ class Api::V1::PortfoliosController < ApplicationController
 							# look_stock.ask = 6.00
 						end
 						puts "weird here"
+						puts "look_stock"
+						puts look_stock.inspect
 						puts "look_stock.ask"
+						if look_stock.ask == nil || look_stock.ask == 0
+							symbol = look_stock.symbol
+							new_to_check = Stock.find_by(symbol: symbol)
+							look_stock.ask = new_to_check.asking_price
+						end
 						puts look_stock.ask.to_i
 						puts "current_price_per_share"
 						puts current_price_per_share.to_i
+
+						# look_stock.ask = 6.00
+
 						if look_stock.ask != current_price_per_share
-							puts "look != current pps"
-							puts "look_stock.ask below"
-							puts look_stock.ask.to_i
-							puts "current_price_per_share below"
-							puts current_price_per_share.to_i
-							if current_price_per_share
-								old_capital_in_stock = current_price_per_share * stock_port.quantity
-								puts "old_capital_in_stock below"
-								puts old_capital_in_stock.to_i
-								new_capital_in_stock = look_stock.ask * stock_port.quantity
-								puts "new_capital_in_stock below"
-								puts new_capital_in_stock.to_i
-								if old_capital_in_stock.to_i < 1
-									stock_port.current_pps = look_stock.ask
-									stock_port.save
-									old_capital_in_stock = stock_port.current_pps
-								end
-								if to_check.stock_capital < 1
-									to_check.cash = to_check.cash - old_capital_in_stock
-									to_check.stock_capital = to_check.stock_capital + old_capital_in_stock
-									to_check.save
-								end
-								to_check.stock_capital = to_check.stock_capital - old_capital_in_stock
-								to_check.stock_capital = to_check.stock_capital + new_capital_in_stock
-								puts "to_check stock capital"
-								puts to_check.stock_capital.to_i
-								puts "@_@" * 10
-								if old_capital_in_stock > new_capital_in_stock
-									puts "loss"
-									total_capital_change = old_capital_in_stock - new_capital_in_stock
-									puts "total_capital_change below"
-									puts total_capital_change.to_i
-									to_check.total_capital = to_check.total_capital - total_capital_change
-									to_check.save
-									puts "portfolio total capital below***"
-									puts to_check.total_capital
+							if look_stock.ask != nil
+								puts "look != current pps"
+								puts "look_stock.ask below"
+								puts look_stock.ask.to_i
+								puts "current_price_per_share below"
+								puts current_price_per_share.to_i
+								if current_price_per_share
+									old_capital_in_stock = current_price_per_share * stock_port.quantity
+									puts "old_capital_in_stock below"
+									puts old_capital_in_stock.to_i
+									new_capital_in_stock = look_stock.ask * stock_port.quantity
+									puts "new_capital_in_stock below"
+									puts new_capital_in_stock.to_i
+									if old_capital_in_stock.to_i < 1
+										stock_port.current_pps = look_stock.ask
+										stock_port.save
+										old_capital_in_stock = stock_port.current_pps
+									end
+									if to_check.stock_capital < 1
+										to_check.cash = to_check.cash - old_capital_in_stock
+										to_check.stock_capital = to_check.stock_capital + old_capital_in_stock
+										to_check.save
+									end
+									to_check.stock_capital = to_check.stock_capital - old_capital_in_stock
+									to_check.stock_capital = to_check.stock_capital + new_capital_in_stock
+									puts "to_check stock capital"
+									puts to_check.stock_capital.to_i
+									puts "@_@" * 10
+									if old_capital_in_stock > new_capital_in_stock
+										puts "loss"
+										total_capital_change = old_capital_in_stock - new_capital_in_stock
+										puts "total_capital_change below"
+										puts total_capital_change.to_i
+										to_check.total_capital = to_check.total_capital - total_capital_change
+										to_check.save
+										puts "portfolio total capital below***"
+										puts to_check.total_capital
 
-								elsif old_capital_in_stock < new_capital_in_stock
-									puts "gain"
-									total_capital_change = new_capital_in_stock - old_capital_in_stock
-									puts "total_capital_change below"
-									puts total_capital_change.to_i
-									to_check.total_capital = to_check.total_capital + total_capital_change
-									to_check.save
-									puts "portfolio total capital below"
-									puts to_check.total_capital
+									elsif old_capital_in_stock < new_capital_in_stock
+										puts "gain"
+										total_capital_change = new_capital_in_stock - old_capital_in_stock
+										puts "total_capital_change below"
+										puts total_capital_change.to_i
+										to_check.total_capital = to_check.total_capital + total_capital_change
+										to_check.save
+										puts "portfolio total capital below"
+										puts to_check.total_capital
 
+									end
 								end
 							end
 							stock_port.current_pps = look_stock.ask
@@ -161,7 +173,6 @@ class Api::V1::PortfoliosController < ApplicationController
 					 days_dollar_change: to_check.days_dollar_change,
 					 months_dollar_change: to_check.months_dollar_change,
 					 years_dollar_change: to_check.years_dollar_change,
-					 total_capital: to_check.total_capital,
 					 investment: to_check.investment,
 					 all_time_percent: to_check.all_time_percent,
 					 all_time_dollar: to_check.all_time_dollar,

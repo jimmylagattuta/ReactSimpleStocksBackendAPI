@@ -85,7 +85,7 @@ class Api::V1::PortfoliosController < ApplicationController
 						puts "current_price_per_share"
 						puts current_price_per_share.to_i
 
-						# look_stock.ask = 6.00
+						look_stock.ask = 2.26
 
 						if look_stock.ask != current_price_per_share
 							if look_stock.ask != nil
@@ -219,6 +219,12 @@ class Api::V1::PortfoliosController < ApplicationController
 	end
 
 	def retrieve_the_added_to
+		puts = "*" * 100
+		puts "params"
+		puts params
+		puts "params inspect"
+		puts params.inspect
+		puts = "*" * 100
 		port_id = params['data'].to_i        
 		stocks = PortfolioStock.where(portfolio_id: port_id)
 		stocks_to_buy = []
@@ -226,7 +232,7 @@ class Api::V1::PortfoliosController < ApplicationController
 			if !(stck.pps_at_purchase)
 				stockobject = {
 					symbol: stck.symbol,
-					ask: stck.stock.asking_price,
+					ask: stck.stock.ask,
 					portStockId: stck.id
 				}
 				stocks_to_buy << stockobject

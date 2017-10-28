@@ -35,4 +35,5 @@ Rails.application.routes.draw do
   post "api/v1/port/retrieve_the_added_to" => "api/v1/portfolios#retrieve_the_added_to"
   post "api/v1/port/buy_stocks" => "api/v1/portfolios#buy_stocks"
   post "api/v1/port/buy_stocks_finalize" => "api/v1/portfolios#buy_stocks_finalize"
+  get "api/v1/stock_symbols/symbols" => "api/v1/stocks#symbols"
 end

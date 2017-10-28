@@ -5,18 +5,31 @@ class Api::V1::StocksController < ApplicationController
 		@all_stocks = Stock.all
 		@all_stocks.each do |stock|
 			symbol_for_loop = stock.symbol
-			puts "stock"
-			puts stock
-			puts "stock inspect"
-			puts stock.inspect
+			# puts "stock"
+			# puts stock
+			# puts "stock inspect"
+			# puts stock.inspect
 			update_stock = StockQuote::Stock.quote(symbol_for_loop)
 
-			# if stock.symbol == 'Cali' 
-			# 	update_stock.ask = 2.26
-			# end
+	
 
 			if update_stock.ask != nil
-				stock.asking_price = update_stock.ask
+				# puts update_stock.inspect
+				# puts 'update_stock.ask ' + update_stock.ask.to_s
+				# puts 'TRIGGERED' * 20
+				# puts "stock.asking_price before " + stock.asking_price.to_s
+
+				# REMOVE
+				# if update_stock.symbol == "CALI"
+				# 	stock.asking_price = 3.00
+				# else	
+				# 	stock.asking_price = update_stock.ask
+				# end
+					# UNCOMMENT
+					stock.asking_price = update_stock.ask
+
+				# puts "stock.asking_price after " + stock.asking_price.to_s
+
 			end
 			if update_stock.bid != nil
 				stock.bidding_price = update_stock.bid
@@ -51,24 +64,24 @@ class Api::V1::StocksController < ApplicationController
 	def create
 		@stock = params
 		symbol = @stock['symbol']
-		puts "*" * 100
-		puts "symbol or company name here"
-		puts symbol.length
-		puts "*" * 100
+		# puts "*" * 100
+		# puts "symbol or company name here"
+		# puts symbol.length
+		# puts "*" * 100
 		if symbol.length == 4
 			@new_stock = StockQuote::Stock.quote(symbol)
 			# JSON
 			# @new_stock = StockQuote::Stock.json_quote(symbol)
-			puts "@new_stock in json here"
-			puts @new_stock.inspect
+			# puts "@new_stock in json here"
+			# puts @new_stock.inspect
 		else
 			# BUG!!!
 			@newer_stock = StockQuote::Symbol.lookup(symbol)
-			puts "@newer_stock lookup below"
-			puts @newer_stock[0].inspect
-			puts "@newer_stock[0].symbol below"
-			puts @newer_stock[0].symbol
-			puts "@newer_stock[0].symbol.splice(0, 3) below"
+			# puts "@newer_stock lookup below"
+			# puts @newer_stock[0].inspect
+			# puts "@newer_stock[0].symbol below"
+			# puts @newer_stock[0].symbol
+			# puts "@newer_stock[0].symbol.splice(0, 3) below"
 			@newerStock = @newer_stock[0].symbol.slice(0, 4)
 			# puts @newerStock
 			# @new_stock = StockQuote::Stock.quote(@newerStock)
@@ -185,5 +198,17 @@ class Api::V1::StocksController < ApplicationController
 			end
 		@stock.delete
 		render json: message
+	end
+
+	def symbols
+		# puts "*" * 100
+		# puts "*" * 100
+		@list = Stock.all
+		symbols = []
+		@list.each do |item|
+			symbols.push(item.symbol)
+			# puts symbols.inspect
+		end
+		render json: symbols
 	end
 end

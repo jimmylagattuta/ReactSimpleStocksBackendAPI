@@ -25,7 +25,6 @@ class Api::V1::PortfoliosController < ApplicationController
 	end
 
 	def port_check
-		puts "1" * 100
 		if params[:id]
 			user = User.find_by(id: params[:id])
 			to_check = Portfolio.find_by(user_id: user.id)
@@ -42,7 +41,6 @@ class Api::V1::PortfoliosController < ApplicationController
 				end
 			end
 			if to_check
-				puts "2" * 100
 				stock_cap = to_check.stock_capital
 				to_check.total_capital = to_check.cash + to_check.stock_capital
 				to_check.save
@@ -50,11 +48,10 @@ class Api::V1::PortfoliosController < ApplicationController
 		end
 		if to_check
 			if to_check.save
-				puts "3" * 100
-				puts "stock capital, total capital, and cash start"
-				puts "stock captal " + to_check.stock_capital.to_s
-				puts "total capital " + to_check.total_capital.to_s
-				puts "cash " + to_check.cash.to_s
+				# puts "stock capital, total capital, and cash start"
+				# puts "stock captal " + to_check.stock_capital.to_s
+				# puts "total capital " + to_check.total_capital.to_s
+				# puts "cash " + to_check.cash.to_s
 			end
 				# puts "1st stock capital " + to_check.stock_capital.to_s
 				# puts "1st total capital " + to_check.total_capital.to_s
@@ -69,13 +66,8 @@ class Api::V1::PortfoliosController < ApplicationController
 		end
 		if itemarray.length != 0
 			itemarray.each do |stock|
-				puts "4" * 100
 				stock.portfolio_stocks.each do |stock_port|
-					puts "STOCK_PORT HERE " + stock_port.inspect 
-					puts "5" * 100
 					if stock_port.portfolio_id == to_check.id
-						puts "6" * 100
-						puts "stock_port symbol " + stock_port.symbol
 						# puts "2nd stock captal " + to_check.stock_capital.to_s
 						# puts "2nd total capital " + to_check.total_capital.to_s
 
@@ -83,6 +75,12 @@ class Api::V1::PortfoliosController < ApplicationController
 						symbol = stock_port.symbol
 						current_price_per_share = stock_port.current_pps
 						look_stock = StockQuote::Stock.quote(symbol)
+						if look_stock.symbol == 'CALI'
+							puts "*" * 100
+							puts 'CALI'
+							puts look_stock.inspect
+							puts "*" * 100
+						end
 
 						if look_stock
 							# COMMENT OUT, THIS IS FOR TESTING
@@ -104,10 +102,8 @@ class Api::V1::PortfoliosController < ApplicationController
 
 						# look_stock.ask = 3.00
 						if look_stock.ask != current_price_per_share
-							puts "bug area 1"
 							# puts "8" * 100
 							if look_stock.ask != nil
-								puts "bug area 2"
 								# puts "9" * 100
 								# puts "look != current pps"
 								# puts "look_stock.ask below"
@@ -115,7 +111,6 @@ class Api::V1::PortfoliosController < ApplicationController
 								# puts "current_price_per_share below"
 								# puts current_price_per_share.to_i
 								if current_price_per_share
-									puts "bug area 3"
 									# puts "10" * 100
 									# puts "8th stock captal " + to_check.stock_capital.to_s
 									# puts "2nd total capital " + to_check.total_capital.to_s
@@ -128,7 +123,6 @@ class Api::V1::PortfoliosController < ApplicationController
 									# puts "new_capital_in_stock below"
 									# puts new_capital_in_stock.to_i
 									if old_capital_in_stock.to_i < 1
-										puts "bug area 4"
 										# puts "11" * 100
 										# puts "7th stock captal " + to_check.stock_capital.to_s
 										# puts "3rd total capital " + to_check.total_capital.to_s
@@ -137,7 +131,6 @@ class Api::V1::PortfoliosController < ApplicationController
 										old_capital_in_stock = stock_port.current_pps
 									end
 									if to_check.stock_capital < 1
-										puts "bug area 5"
 										# puts "12" * 100
 										# puts "6th stock captal " + to_check.stock_capital.to_s
 										# puts "4th total capital " + to_check.total_capital.to_s
@@ -157,7 +150,6 @@ class Api::V1::PortfoliosController < ApplicationController
 									# puts to_check.stock_capital.to_i
 									# puts "@_@" * 10
 									if old_capital_in_stock > new_capital_in_stock
-										puts "bug area 6"
 										# puts "13" * 100
 										# puts "5th stock captal " + to_check.stock_capital.to_s
 										# puts "7th total capital " + to_check.total_capital.to_s
@@ -166,7 +158,7 @@ class Api::V1::PortfoliosController < ApplicationController
 										# puts "total_capital_change below"
 										# puts total_capital_change.to_i
 										to_check.total_capital = to_check.total_capital - total_capital_change
-										puts "bug area 6 stock_capital " + to_check.stock_capital.to_s
+										# puts "bug area 6 stock_capital " + to_check.stock_capital.to_s
 										to_check.stock_capital = to_check.stock_capital - total_capital_change
 
 
@@ -177,7 +169,6 @@ class Api::V1::PortfoliosController < ApplicationController
 										# puts "8th total capital " + to_check.total_capital.to_s
 
 									elsif old_capital_in_stock < new_capital_in_stock
-										puts "bug area 7"
 										# puts "14" * 100
 										# puts "4th stock captal " + to_check.stock_capital.to_s
 										# puts "9th total capital " + to_check.total_capital.to_s
@@ -191,7 +182,7 @@ class Api::V1::PortfoliosController < ApplicationController
 										# puts 'to_check total capital ' + to_check.total_capital.to_s
 										to_check.total_capital = to_check.total_capital + total_capital_change
 										# puts 'to_check total capital ' + to_check.total_capital.to_s
-										puts "bug area 7 stock_capital " + to_check.stock_capital.to_s
+										# puts "bug area 7 stock_capital " + to_check.stock_capital.to_s
 										to_check.stock_capital = to_check.stock_capital + total_capital_change
 										to_check.save
 										# puts "portfolio total capital below"
@@ -217,10 +208,10 @@ class Api::V1::PortfoliosController < ApplicationController
 				end
 			end
 			if to_check.save
-				puts "stock capital, total capital, and cash end"
-				puts "stock captal " + to_check.stock_capital.to_s
-				puts "total capital " + to_check.total_capital.to_s
-				puts "cash " + to_check.cash.to_s
+				# puts "stock capital, total capital, and cash end"
+				# puts "stock captal " + to_check.stock_capital.to_s
+				# puts "total capital " + to_check.total_capital.to_s
+				# puts "cash " + to_check.cash.to_s
 			end
 			# puts "11th total capital " + to_check.total_capital.to_s
 
@@ -344,51 +335,111 @@ class Api::V1::PortfoliosController < ApplicationController
 		the_port = Portfolio.find_by(id: portId)
 		the_port_stock = PortfolioStock.find_by(id: portStockId)
 		if the_port
-			puts "*" * 100
-			puts "params"
-			puts params.inspect
-			puts "port here"
-			puts the_port.inspect
-			puts "total here"
-			puts total.inspect
-			puts "$" * 100
-			puts "the port cash"
-			puts the_port.cash
-			puts "$" * 100
-			puts "*" * 100
+			# puts "*" * 100
+			# puts "params"
+			# puts params.inspect
+			# puts "port here"
+			# puts the_port.inspect
+			# puts "total here"
+			# puts total.inspect
+			# puts "$" * 100
+			# puts "the port cash"
+			# puts the_port.cash
+			# puts "$" * 100
+			# puts "*" * 100
 		end
-		puts "PPS" * 20
-		puts pps
+		# puts "PPS" * 20
+		# puts pps
 		the_port_stock.pps_at_purchase = pps
-		puts "PPS_AT_PURCHSE" * 20
-		puts the_port_stock.pps_at_purchase
+		# puts "PPS_AT_PURCHSE" * 20
+		# puts the_port_stock.pps_at_purchase
 		the_port_stock.current_pps = pps
 		the_port_stock.quantity = quantity
-		puts "THE PORT STOCK QUANTITY " + the_port_stock.quantity.to_s
+		# puts "THE PORT STOCK QUANTITY " + the_port_stock.quantity.to_s
 		the_port_stock.save
 		the_port.cash = the_port.cash - total
 		the_port_stock.capital_at_purchase = the_port_stock.current_pps * the_port_stock.quantity
 		if !the_port.stock_capital
-			puts "NULL" * 20
+			# puts "NULL" * 20
 			the_port.stock_capital = 0
 			the_port.save
 		end
 		the_port.stock_capital = the_port.stock_capital + total
 		if the_port
-			puts "*" * 100
-			puts "port here"
-			puts the_port.inspect
-			puts "*" * 100
-			puts "$" * 100
-			puts "the port cash"
-			puts the_port.cash
-			puts "the port stock capital"
-			puts the_port.stock_capital
-			puts "$" * 100
+			# puts "*" * 100
+			# puts "port here"
+			# puts the_port.inspect
+			# puts "*" * 100
+			# puts "$" * 100
+			# puts "the port cash"
+			# puts the_port.cash
+			# puts "the port stock capital"
+			# puts the_port.stock_capital
+			# puts "$" * 100
 		end
 		the_port.save
 		render json: the_port_stock
 	end
 
+	def port_stocks
+		puts "*" * 100
+		puts "params"
+		puts params
+		new_id = params['data']
+		new_id = new_id.to_i
+		portfolio = Portfolio.find_by(id: new_id)
+		puts 'portfolio'
+		puts portfolio.inspect
+		list = []
+		id_count = 1
+		portfolio.stocks.each do |item|
+			quantity = 0
+			portfolio.portfolio_stocks.each do |x|
+				if x.symbol == item.symbol
+					quantity = x.quantity
+					puts " <~QUANTITY~> " * 3
+					puts quantity
+				end
+			end
+			puts 'about to be new_ask'
+			puts item.bidding_price.round(2)
+			puts 'item again'
+			puts item.bidding_price
+			puts 'item'
+			puts item.inspect
+			new_ask = item.bidding_price.round(2)
+			puts 'new_ask'
+			puts new_ask
+			info = {
+				symbol: item.symbol,
+				bid: new_ask,
+				id: id_count,
+				quantity: quantity
+			}
+			list.push(info)
+			id_count += 1
+		end
+		puts "*" * 100
+		render json: list
+	end
+
+	def save_to_sell
+		puts "*" * 20
+		puts "params to_save"
+		puts params.inspect
+		message = { message: 'recieved save_to_sell' }
+		puts "*" * 20
+		render json: message		
+	end
+
+	def to_sell
+		puts "*" * 20
+		puts "params to_sell"
+		puts params.inspect
+		message = { message: 'recieved' }
+		puts "*" * 20
+		render json: message
+
+	end
 
 end

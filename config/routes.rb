@@ -36,4 +36,8 @@ Rails.application.routes.draw do
   post "api/v1/port/buy_stocks" => "api/v1/portfolios#buy_stocks"
   post "api/v1/port/buy_stocks_finalize" => "api/v1/portfolios#buy_stocks_finalize"
   get "api/v1/stock_symbols/symbols" => "api/v1/stocks#symbols"
+  post "api/v1/port_stocks/get_stocks" => "api/v1/portfolios#port_stocks"
+  post "api/v1/port_stocks/to_sell" => "api/v1/portfolios#to_sell"
+  post "api/v1/port_stocks/save_to_sell" => "api/v1/portfolios#save_to_sell"
+
 end

@@ -378,18 +378,25 @@ class Api::V1::PortfoliosController < ApplicationController
 			# puts "$" * 100
 		end
 		the_port.save
+		if the_port.save
+			the_port.portfolio_stocks.each do |x|
+				x.active_stock = true
+				x.save
+			end
+
+		end
 		render json: the_port_stock
 	end
 
 	def port_stocks
-		puts "*" * 100
-		puts "params"
-		puts params
+		# puts "*" * 100
+		# puts "params"
+		# puts params
 		new_id = params['data']
 		new_id = new_id.to_i
 		portfolio = Portfolio.find_by(id: new_id)
-		puts 'portfolio'
-		puts portfolio.inspect
+		# puts 'portfolio'
+		# puts portfolio.inspect
 		list = []
 		id_count = 1
 		portfolio.stocks.each do |item|
@@ -397,19 +404,19 @@ class Api::V1::PortfoliosController < ApplicationController
 			portfolio.portfolio_stocks.each do |x|
 				if x.symbol == item.symbol
 					quantity = x.quantity
-					puts " <~QUANTITY~> " * 3
-					puts quantity
+					# puts " <~QUANTITY~> " * 3
+					# puts quantity
 				end
 			end
-			puts 'about to be new_ask'
-			puts item.bidding_price.round(2)
-			puts 'item again'
-			puts item.bidding_price
-			puts 'item'
-			puts item.inspect
+			# puts 'about to be new_ask'
+			# puts item.bidding_price.round(2)
+			# puts 'item again'
+			# puts item.bidding_price
+			# puts 'item'
+			# puts item.inspect
 			new_ask = item.bidding_price.round(2)
-			puts 'new_ask'
-			puts new_ask
+			# puts 'new_ask'
+			# puts new_ask
 			info = {
 				symbol: item.symbol,
 				bid: new_ask,
@@ -419,27 +426,92 @@ class Api::V1::PortfoliosController < ApplicationController
 			list.push(info)
 			id_count += 1
 		end
-		puts "*" * 100
+		# puts "*" * 100
 		render json: list
 	end
 
 	def save_to_sell
-		puts "*" * 20
-		puts "params to_save"
-		puts params.inspect
+		# puts "*" * 20
+		# puts "params to_save"
+		# puts params.inspect
+		new_port_id = params['data']['portId'].to_i
+		bid = params['data']['items']['bid'].slice(0, 1)
+		bid_decimal = params['data']['items']['bid'].slice(2, 3)
+		correct_bid = bid.to_s + "." + bid_decimal.to_s
+		quantity = params['data']['items']['quantity'].to_i
+		symbol = params['data']['items']['symbol']
+		portfolio = Portfolio.find_by(id: new_port_id)
+
+		portfolio.portfolio_stocks.each do |item|
+			if item.pps_at_sale != nil
+				item.pps_at_sale = nil && item.active_stock
+				item.save
+			end
+			if item.symbol == symbol
+				item.pps_at_sale = correct_bid
+				# puts "$$$"
+				# puts 'bid'
+				# puts bid
+				# puts "bid_decimal"
+				# puts bid_decimal
+				# puts "correct_bid"
+				# puts correct_bid
+				item.save
+			end
+		end
 		message = { message: 'recieved save_to_sell' }
-		puts "*" * 20
+		# puts "*" * 20
 		render json: message		
 	end
 
 	def to_sell
-		puts "*" * 20
-		puts "params to_sell"
-		puts params.inspect
-		message = { message: 'recieved' }
-		puts "*" * 20
-		render json: message
+		# puts "*" * 20
+		# puts "params to_sell"
+		port_id = params['data']
+		# puts port_id
+		item = []
+		quantity_owned = 0
+		port = Portfolio.find_by(id: port_id)
+		port.portfolio_stocks.each do |x|
+			if x.pps_at_purchase != nil
+				item.push(x)
+				# puts "x"
+				# puts x.inspect
+				# quantity_owned = x.quantity
+				# puts "QUANTITY"
+				# puts quantity_owned
+				# puts 'buying list here'
+				# puts item.inspect
+			end
+		end
+		buying = {
+			content: item
+		}
+		# puts "*" * 20
+		render json: buying
 
+	end
+
+	def final_sell
+		puts "*" * 100
+		puts "params"
+		puts params.inspect
+		quantity_final_sell = params['quantityToBuy']
+		quantity_final_sell = quantity_final_sell.to_i
+		the_stock_id = params['stockId']
+		the_stock_id = the_stock_id.to_i
+		portfolio = Portfolio.find_by(id: params['portId'])
+		portfolio.portfolio_stocks.each do |item|
+			if item.quantity == quantity_final_sell && item.stock_id == the_stock_id
+				@portfolio_stock = PortfolioStock.find_by(id: item.id)
+			end
+		end
+		puts "portfolio_stock "
+		puts @portfolio_stock.inspect
+
+		message = { message: 'final_sell ready' }
+		render json: message
+		puts "*" * 100
 	end
 
 end

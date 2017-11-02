@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022202348) do
+ActiveRecord::Schema.define(version: 20171029091355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,17 +33,18 @@ ActiveRecord::Schema.define(version: 20171022202348) do
   end
 
   create_table "portfolio_stocks", force: :cascade do |t|
-    t.decimal  "portfolio_id",              precision: 9, scale: 2
-    t.decimal  "stock_id",                  precision: 9, scale: 2
-    t.decimal  "pps_at_purchase",           precision: 9, scale: 2
-    t.decimal  "current_pps",               precision: 9, scale: 2
-    t.decimal  "pps_at_sale",               precision: 9, scale: 2
-    t.decimal  "quantity",                  precision: 9, scale: 2
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.decimal  "portfolio_id",         precision: 9, scale: 2
+    t.decimal  "stock_id",             precision: 9, scale: 2
+    t.decimal  "pps_at_purchase",      precision: 9, scale: 2
+    t.decimal  "current_pps",          precision: 9, scale: 2
+    t.decimal  "pps_at_sale",          precision: 9, scale: 2
+    t.decimal  "quantity",             precision: 9, scale: 2
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "symbol"
-    t.decimal  "capital_at_purchase",       precision: 9, scale: 2
-    t.decimal  "capital_at_purchse_status", precision: 9, scale: 2
+    t.decimal  "capital_gain_or_loss", precision: 9, scale: 2
+    t.decimal  "active",               precision: 9, scale: 2
+    t.boolean  "active_stock"
   end
 
   create_table "portfolios", force: :cascade do |t|
